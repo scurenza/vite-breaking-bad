@@ -31,17 +31,19 @@ export default {
   methods: {
     getCharacters () {
       this.store.loading = true;
-      let apiUrl = "https://www.breakingbadapi.com/api/characters";
+      let apiUrl = "https://www.breakingbadapi.com/api/characters?category=";
 
       // OGGETTO PARAMS
-      const urlParams= ""
+      // let urlParams= "";
       if (this.store.searchStatus) {
-        urlParams = this.store.searchStatus;
+        apiUrl += this.store.searchStatus;
       }
 
-      axios.get(apiUrl,urlParams)
+      axios.get(apiUrl)
       .then((resp) => {
-        this.store.characters = resp.data.results
+        this.store.characters = resp.data;
+        console.log(resp);
+        this.store.charactersNum = resp.data.length;
       })
       .catch(error => {
         this.store.characters = [];
@@ -61,7 +63,7 @@ export default {
     <main>
       <div class="container mt-4 p-3">
         
-        <AppLoader v-if="!store.loading" />
+        <AppLoader v-if="store.loading" />
         <CharacterList v-else />
       </div>
     </main>

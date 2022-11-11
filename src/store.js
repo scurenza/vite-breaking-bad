@@ -3,5 +3,6 @@ import { reactive } from "vue";
 export const store = reactive({
     characters : [],
     loading: false,
-    searchStatus: ""
+    searchStatus: "",
+    charactersNum: ""
 });

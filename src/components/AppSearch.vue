@@ -19,7 +19,7 @@ export default {
             <option v-for="(option, index) in statusOption" :value="option" :key="index">{{ option }}</option>
         </select>
         <div class="founded d-flex justify-content-center align-items-center text-white">
-            X characters found
+           {{ store.charactersNum }} characters found
         </div>
         <button class="btn btn-primary" @click="$emit('doSearch')">Search</button>
     </div>
