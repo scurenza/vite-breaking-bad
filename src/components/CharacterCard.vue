@@ -20,7 +20,8 @@ export default {
 @use "../styles/partials/variables" as *;
 .card-item {
     background-color: $bg-color;
-    min-height: 478px;
+    min-height: 500px;
+    
     p{
         margin: 0;
     }

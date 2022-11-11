@@ -2,6 +2,7 @@
 import axios from "axios";
 import AppHeader from "./components/AppHeader.vue";
 import AppLoader from "./components/AppLoader.vue";
+import AppSearch from "./components/AppSearch.vue";
 
 import CharacterList from "./components/CharacterList.vue";
 import { store } from "./store"
@@ -10,7 +11,8 @@ export default {
   components: {
     AppHeader,
     AppLoader,
-    CharacterList
+    CharacterList,
+    AppSearch
   },
   data() {
     return {
@@ -18,11 +20,36 @@ export default {
     }
   },
   created() {
-    this.store.loading = true;
-    axios.get("https://www.breakingbadapi.com/api/characters").then((resp) => {
-      this.store.characters = resp.data;
-      console.log(this.store.characters);
-    })
+    // this.store.loading = true;
+    // axios.get("https://www.breakingbadapi.com/api/characters").then((resp) => {
+    //   this.store.characters = resp.data;
+    //   console.log(this.store.characters);
+    // })
+
+    this.getCharacters();
+  },
+  methods: {
+    getCharacters () {
+      this.store.loading = true;
+      let apiUrl = "https://www.breakingbadapi.com/api/characters";
+
+      // OGGETTO PARAMS
+      const urlParams= ""
+      if (this.store.searchStatus) {
+        urlParams = this.store.searchStatus;
+      }
+
+      axios.get(apiUrl,urlParams)
+      .then((resp) => {
+        this.store.characters = resp.data.results
+      })
+      .catch(error => {
+        this.store.characters = [];
+      })
+      .finally(() => {
+        this.store.loading = false;
+      })
+    }
   }
 }
 </script>
@@ -30,8 +57,10 @@ export default {
 <template>
   <div class="wrapper">
     <AppHeader />
+    <AppSearch @doSearch="getCharacters"/>
     <main>
-      <div class="container mt-3">
+      <div class="container mt-4 p-3">
+        
         <AppLoader v-if="!store.loading" />
         <CharacterList v-else />
       </div>
@@ -50,6 +79,6 @@ export default {
 .container{
   background-color: $container-color;
   width: 75%;
-  min-height: 150px;
+  min-height: 170px;
 }
 </style>
